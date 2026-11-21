@@ -1,0 +1,26 @@
+export const ROTATING_WORDS = ['TimesPrime', 'Times Black', '1838 Reserve', 'Aeonic'] as const
+
+export const MARQUEE_ITEMS = [
+  'Next.js',
+  'React',
+  'TypeScript',
+  'Node.js',
+  'Angular',
+  'Redux',
+  'TanStack Query',
+  'Storybook',
+  'Micro-frontends',
+  'CDN',
+  'Akamai',
+  'Docker',
+  'Kubernetes',
+  'GCP',
+  'GitHub Actions',
+  'Elastic APM & RUM',
+  'Sentry',
+  'Lighthouse',
+  'Core Web Vitals',
+  'Playwright',
+  'WebMCP',
+  'Claude Code',
+] as const

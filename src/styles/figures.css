@@ -1,0 +1,14 @@
+/* counters */
+/* counters */
+.figs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.fig{border-radius:22px;padding:22px 18px;background:var(--soft)}
+.fig b{display:block;font:700 clamp(30px,3vw,40px)/1 var(--ff-display);white-space:nowrap}
+.fig span{font-size:14px;color:var(--mute);line-height:1.4;display:block;margin-top:10px}
+.fig:nth-child(1){background:#eef1ff}.fig:nth-child(1) b{color:var(--cob)}
+.fig:nth-child(2){background:#fff1ef}.fig:nth-child(2) b{color:var(--coral)}
+.fig:nth-child(3){background:#e9fbf5}.fig:nth-child(3) b{color:#0b9a79}
+.fig:nth-child(4){background:#fff7df}.fig:nth-child(4) b{color:#c98a00}
+.fig:nth-child(5){background:#ecf8fe}.fig:nth-child(5) b{color:#0b84c2}
+.fig:nth-child(6){background:#f3efff}.fig:nth-child(6) b{color:#6c3cf0}
+@media(max-width:1060px){.figs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.figs{grid-template-columns:repeat(2,minmax(0,1fr))}}

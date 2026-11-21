@@ -1,0 +1,14 @@
+/* contact footer */
+.foot-band{padding-inline:max(5vw,16px);padding-bottom:max(5vw,16px)}
+footer{max-width:1240px;margin:0 auto;border-radius:36px;background:radial-gradient(100% 140% at 0% 100%,#ff8a7a 0%,#7b5cff 35%,var(--cob) 70%);color:#fff;padding:clamp(32px,5vw,64px);position:relative;overflow:hidden}
+.foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:36px;align-items:center;position:relative}
+.foot p{color:#eef0ff}
+.contact{list-style:none;padding:24px;margin:0;display:grid;gap:12px;font-size:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:24px}
+.who{display:flex;align-items:center;gap:14px;padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,.25)}
+.who img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #fff}
+.who b{display:block;font:700 18px var(--ff-display)}
+.who em{font-style:normal;color:#dfe4ff;font-size:14px}
+.contact span{color:#dfe4ff;display:inline-block;width:6em}
+.contact a{overflow-wrap:anywhere}
+.copy{text-align:center;font-size:14px;color:var(--mute);padding:24px 16px 32px}
+@media(max-width:860px){.foot{grid-template-columns:minmax(0,1fr)}}
