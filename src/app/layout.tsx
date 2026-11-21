@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono, Manrope, Playfair_Display } from 'next/font/google'
 import { HydrationFlag } from '@/components/HydrationFlag'
-import { SITE_DESCRIPTION } from '@/data/profile'
+import { PROFILE, SITE_DESCRIPTION } from '@/data/profile'
+import { SITE_URL } from '@/lib/siteUrl'
 import '@/styles/base.css'
 import '@/styles/nav.css'
 import '@/styles/hero.css'
@@ -18,10 +19,43 @@ const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', displa
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains', display: 'swap' })
 
+const SITE_TITLE = `${PROFILE.name} | Lead Frontend Engineer & Frontend Architect`
+
 export const metadata: Metadata = {
-  title: 'Priyam Vashishtha Portfolio',
+  metadataBase: SITE_URL,
+  title: SITE_TITLE,
   description: SITE_DESCRIPTION,
+  applicationName: `${PROFILE.name} Portfolio`,
+  authors: [{ name: PROFILE.name, url: PROFILE.linkedinUrl }],
+  creator: PROFILE.name,
+  alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    type: 'website',
+    url: '/',
+    siteName: `${PROFILE.name} Portfolio`,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 }
+
+const PERSON_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL.origin}/#person`,
+  name: PROFILE.name,
+  jobTitle: PROFILE.role,
+  url: SITE_URL.origin,
+  image: new URL(PROFILE.avatar, SITE_URL).toString(),
+  sameAs: [PROFILE.linkedinUrl, PROFILE.githubUrl],
+  knowsAbout: ['React', 'Next.js', 'TypeScript', 'Frontend architecture', 'Design systems', 'Web performance'],
+}).replace(/</g, '\\u003c')
 
 const HYDRATION_TIMEOUT_MS = 4000
 
@@ -37,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: JS_FLAG_SCRIPT }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PERSON_JSON_LD }} />
       </head>
       <body>
         <HydrationFlag />
