@@ -1,4 +1,6 @@
 /* host router demo */
+.router-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.router-status{font:600 13px var(--ff-body);color:var(--mute)}
 .router{background:linear-gradient(135deg,#f3f5ff,#fff7f5);border-radius:32px;padding:clamp(18px,2.8vw,36px);border:1px solid var(--line)}
 .rgrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr) minmax(0,1.3fr);gap:18px;align-items:stretch}
 .rgrid>div{display:flex;flex-direction:column}

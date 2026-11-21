@@ -22,6 +22,9 @@ p{margin:0 0 12px}
 .btn.sun{background:var(--sun);border-color:var(--sun);color:var(--ink)}
 .btn.ghost{background:transparent;border-color:rgba(255,255,255,.5);color:#fff}
 a:focus-visible,button:focus-visible{outline:3px solid var(--cob);outline-offset:3px}
+.play-control{flex:none;min-height:34px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:600 12px var(--ff-body);cursor:pointer;white-space:nowrap}
+.play-control:hover:not(:disabled){border-color:var(--cob);color:var(--cob)}
+.play-control:disabled{opacity:.65;cursor:default}
 .sec-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:end;margin-bottom:32px}
 .lab{font-size:13.5px;font-weight:600;color:var(--mute);margin-bottom:10px}
 /* reveal */

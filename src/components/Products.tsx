@@ -1,9 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, type MouseEvent } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { PRODUCTS } from '@/data/products'
-import { usePauseOnInteraction } from '@/hooks/usePauseOnInteraction'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import type { CSSVars } from '@/lib/cssVars'
 import { Reveal } from './Reveal'
 import { SectionHeader } from './SectionHeader'
@@ -12,18 +12,32 @@ const AUTOPLAY_MS = 6000
 
 export function Products() {
   const [active, setActive] = useState(0)
-  const { paused, handlers: pauseHandlers } = usePauseOnInteraction()
+  const [paused, setPaused] = useState(false)
+  const [playbackVersion, setPlaybackVersion] = useState(0)
+  const reduced = useReducedMotion()
   const product = PRODUCTS[active]
 
-  // Advance when the active item's progress bar finishes. Pausing the bar (hover or keyboard focus)
-  // pauses autoplay, and reduced motion (animation disabled) disables autoplay, with no separate
-  // timer to keep in sync.
-  const advance = () => setActive((i) => (i + 1) % PRODUCTS.length)
+  // A real timer drives autoplay. CSS animation events can be skipped when a tab is backgrounded
+  // or animations are suppressed, so the visual progress bar is only an indicator.
+  useEffect(() => {
+    if (paused || reduced) return
+
+    const timeout = window.setTimeout(() => {
+      setActive((i) => (i + 1) % PRODUCTS.length)
+    }, AUTOPLAY_MS)
+
+    return () => window.clearTimeout(timeout)
+  }, [active, paused, reduced, playbackVersion])
+
+  const selectProduct = (index: number) => {
+    setActive(index)
+    setPlaybackVersion((version) => version + 1)
+  }
 
   const isInsideLink = (target: EventTarget) => target instanceof Element && target.closest('a') !== null
 
   const handleClick = (index: number) => (event: MouseEvent) => {
-    if (!isInsideLink(event.target)) setActive(index)
+    if (!isInsideLink(event.target)) selectProduct(index)
   }
 
   const bandStyle: CSSVars = { '--pbg': product.background }
@@ -36,7 +50,7 @@ export function Products() {
           Luxury credit cards, fine dining and wellness: four premium consumer brands, each with its own look and
           feel, all running on the one Next.js core I architected at Times Internet.
         </SectionHeader>
-        <Reveal className={`show${paused ? ' paused' : ''}`} delay={1} style={showStyle} {...pauseHandlers}>
+        <Reveal className={`show${paused || reduced ? ' paused' : ''}`} delay={1} style={showStyle}>
           <div className="plist">
             {PRODUCTS.map((p, i) => (
               // The whole row is clickable for mouse users; keyboard and assistive tech use the real
@@ -46,7 +60,7 @@ export function Products() {
                 className={`pitem${i === active ? ' on' : ''}`}
                 onClick={handleClick(i)}
               >
-                <span className="prog" onAnimationEnd={i === active ? advance : undefined} />
+                <span key={i === active ? `${p.key}-${playbackVersion}` : p.key} className="prog" />
                 <button
                   type="button"
                   className="phead"
@@ -81,6 +95,17 @@ export function Products() {
                 <i />
                 <i />
                 <span>https://{product.domain}</span>
+                <button
+                  type="button"
+                  className="play-control"
+                  disabled={reduced}
+                  onClick={() => {
+                    setPaused((value) => !value)
+                    setPlaybackVersion((version) => version + 1)
+                  }}
+                >
+                  {reduced ? 'Reduced motion' : paused ? 'Resume slideshow' : 'Pause slideshow'}
+                </button>
               </div>
               <div className="screens">
                 {PRODUCTS.map((p, i) => (

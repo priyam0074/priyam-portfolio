@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { TENANTS } from '@/data/tenants'
-import { usePauseOnInteraction } from '@/hooks/usePauseOnInteraction'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Reveal } from './Reveal'
 import { SectionHeader } from './SectionHeader'
@@ -14,13 +13,14 @@ export function PlatformRouter() {
   const reduced = useReducedMotion()
   const [current, setCurrent] = useState(0)
   const [pinned, setPinned] = useState(false)
-  const { paused, handlers: pauseHandlers } = usePauseOnInteraction()
+  const [playing, setPlaying] = useState(true)
+  const autoRotating = !reduced && !pinned && playing
 
   useEffect(() => {
-    if (reduced || pinned || paused) return
-    const id = setInterval(() => setCurrent((i) => (i + 1) % TENANTS.length), CYCLE_EVERY_MS)
-    return () => clearInterval(id)
-  }, [reduced, pinned, paused])
+    if (!autoRotating) return
+    const id = window.setInterval(() => setCurrent((i) => (i + 1) % TENANTS.length), CYCLE_EVERY_MS)
+    return () => window.clearInterval(id)
+  }, [autoRotating])
 
   const tenant = TENANTS[current]
   const steps = [
@@ -39,7 +39,33 @@ export function PlatformRouter() {
           Each request is resolved by host. The shared core picks the brand&apos;s theme, routes and feature flags,
           and renders that brand&apos;s product from one codebase. Click a host to pin it.
         </SectionHeader>
-        <Reveal className="router" delay={1} {...pauseHandlers}>
+        <Reveal className="router" delay={1}>
+          <div className="router-head">
+            <span className="router-status">
+              {reduced
+                ? 'Reduced motion: select a brand to preview'
+                : pinned
+                  ? `Showing ${tenant.name}`
+                  : playing
+                    ? 'Brands rotate automatically'
+                    : 'Rotation paused'}
+            </span>
+            <button
+              type="button"
+              className="play-control"
+              disabled={reduced}
+              onClick={() => {
+                if (pinned) {
+                  setPinned(false)
+                  setPlaying(true)
+                } else {
+                  setPlaying((value) => !value)
+                }
+              }}
+            >
+              {reduced ? 'Reduced motion' : pinned ? 'Resume rotation' : playing ? 'Pause rotation' : 'Resume rotation'}
+            </button>
+          </div>
           <div className="rgrid">
             <div>
               <div className="lab">1. Request from a host</div>
