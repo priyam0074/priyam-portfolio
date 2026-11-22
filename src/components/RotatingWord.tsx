@@ -6,6 +6,11 @@ import { ROTATING_WORDS } from '@/data/brands'
 
 const ROTATE_EVERY_MS = 2400
 
+/**
+ * Every word is stacked in the same grid cell, so the wrapper is always as wide and tall as the
+ * longest word. Swapping the visible one therefore never reflows the heading (which used to make
+ * the hero jump up and down on mobile). Only the active word is exposed to assistive tech.
+ */
 export function RotatingWord() {
   const reduced = useReducedMotion()
   const [tick, setTick] = useState(0)
@@ -16,10 +21,23 @@ export function RotatingWord() {
     return () => clearInterval(id)
   }, [reduced])
 
-  // `key` remounts the span so the swap animation replays on every change.
+  const active = tick % ROTATING_WORDS.length
+
   return (
-    <span key={tick} className={`grad rot${tick > 0 ? ' swap' : ''}`}>
-      {ROTATING_WORDS[tick % ROTATING_WORDS.length]}
+    <span className="rot">
+      {ROTATING_WORDS.map((word, index) => {
+        const isActive = index === active
+        // The active word is re-keyed on every tick so its swap animation replays.
+        return (
+          <span
+            key={isActive ? `${word}-${tick}` : word}
+            className={`grad${isActive ? (tick > 0 ? ' rot-on swap' : ' rot-on') : ' rot-off'}`}
+            aria-hidden={isActive ? undefined : true}
+          >
+            {word}
+          </span>
+        )
+      })}
     </span>
   )
 }

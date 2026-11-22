@@ -4,8 +4,8 @@ const DOT_COUNT = 30
 
 const WINDOWS = [
   { transform: 'translate(40,58)', bob: 'bob', fill: '#1e3b2f', textFill: '#f0d9b0', label: 'Dine' },
-  { transform: 'translate(390,48)', bob: 'bob b2', fill: '#15151b', textFill: '#ffc531', label: 'Times Black' },
-  { transform: 'translate(26,212) scale(.86)', bob: 'bob b3', fill: '#0d8a83', textFill: '#fff', label: 'Aeonic' },
+  { transform: 'translate(390,48)', bob: 'bob b2', fill: '#15151b', textFill: '#ffc531', label: 'TimesBlack' },
+  { transform: 'translate(26,212) scale(.86)', bob: 'bob b3', fill: '#0d8a83', textFill: '#fff', label: 'TimesAeonic' },
   { transform: 'translate(428,202) scale(.86)', bob: 'bob b4', fill: '#ff5a4e', textFill: '#fff', label: '1838 Reserve' },
 ] as const
 

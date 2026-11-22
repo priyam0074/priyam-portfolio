@@ -9,11 +9,17 @@
 .me span{display:block;font-size:14.5px;color:var(--mute)}
 .me span em{font-style:normal;color:#0b9a79;font-weight:600}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;z-index:-1}
+/* The hero clips its glow blobs, which left a hard edge against the next section. Fade the bottom
+   into the page background (the products band also starts at #fff) so the two read as one surface.
+   Painted after the blobs at the same z-index, so it sits over them but under the content. */
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:clamp(160px,22vw,260px);background:linear-gradient(180deg,rgba(255,255,255,0),var(--bg));z-index:-1;pointer-events:none}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(28px,5vw,64px);align-items:center}
 .pill{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);padding:7px 14px 7px 10px;border-radius:999px;font-size:14.5px;font-weight:500;margin-bottom:22px;box-shadow:0 6px 18px -10px rgba(20,35,120,.3)}
 .pill i{width:10px;height:10px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(20,184,146,.2)}
-.rot{display:inline-block;min-width:6ch}
-.rot.swap{animation:swap .5s ease}
+.rot{display:inline-grid;vertical-align:bottom;white-space:nowrap}
+.rot>span{grid-area:1/1}
+.rot-off{visibility:hidden}
+.rot .swap{animation:swap .5s ease}
 @keyframes swap{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .hero .lede{margin-top:22px}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
