@@ -41,5 +41,9 @@
    whole image stays visible. `.show` becomes a flex column (not a grid) because a sticky item can
    only travel inside its own grid row, and the image has to travel the full height of the list.
    66px = header height, so the frame tucks under the header edge with no gap. */
+/* Stacked layout: hold the list at the height of its tallest state (measured in Products.tsx) so the
+   rotation never moves the page below it. `align-content:start` stops the spare room being spread
+   across the rows. */
+@media(max-width:860px){.plist{min-height:var(--plist-min,0);align-content:start}}
 @media(max-width:600px){.show{display:flex;flex-direction:column;align-items:stretch;gap:clamp(24px,4vw,56px)}.stage2{position:sticky;top:66px;z-index:5;padding:6px 0 10px;background:var(--pbg)}}
 @media(max-width:600px){.cap{padding:8px 12px 8px 8px}.cap i{width:30px;height:30px}.cap b{font-size:14px}.badge{display:none}.cap{display:none}}

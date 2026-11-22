@@ -1,10 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { PRODUCTS } from '@/data/products'
+import { useInView } from '@/hooks/useInView'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import type { CSSVars } from '@/lib/cssVars'
+import { reservedListHeight } from '@/lib/reservedHeight'
 import { Reveal } from './Reveal'
 import { SectionHeader } from './SectionHeader'
 
@@ -14,20 +16,61 @@ export function Products() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const [playbackVersion, setPlaybackVersion] = useState(0)
+  const [listMinHeight, setListMinHeight] = useState<number | null>(null)
   const reduced = useReducedMotion()
+  const sectionRef = useRef<HTMLElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(sectionRef)
   const product = PRODUCTS[active]
+
+  // Autoplay only runs while the section is on screen (and the visitor has not paused it), so it
+  // stops resizing the page above content they are actually reading further down.
+  const running = !paused && !reduced && inView
 
   // A real timer drives autoplay. CSS animation events can be skipped when a tab is backgrounded
   // or animations are suppressed, so the visual progress bar is only an indicator.
   useEffect(() => {
-    if (paused || reduced) return
+    if (!running) return
 
     const timeout = window.setTimeout(() => {
       setActive((i) => (i + 1) % PRODUCTS.length)
     }, AUTOPLAY_MS)
 
     return () => window.clearTimeout(timeout)
-  }, [active, paused, reduced, playbackVersion])
+  }, [active, running, playbackVersion])
+
+  // Each product's details are a different height, so the list used to grow and shrink on every
+  // rotation and push everything below it up and down. Measure the tallest state and reserve it
+  // (applied on narrow screens only, where the list sits above the rest of the page).
+  useEffect(() => {
+    const list = listRef.current
+    if (!list) return
+
+    let cancelled = false
+    const measure = () => {
+      if (cancelled) return
+      const rows = Array.from(list.children).filter((row): row is HTMLElement => row instanceof HTMLElement)
+      const panels = rows.map((row) => row.querySelector<HTMLElement>('.pmore'))
+      const inners = rows.map((row) => row.querySelector<HTMLElement>('.pmore > div'))
+      if (panels.some((panel) => !panel) || inners.some((inner) => !inner)) return
+
+      const collapsed = rows.map((row, i) => row.offsetHeight - (panels[i]?.offsetHeight ?? 0))
+      const details = inners.map((inner) => inner?.scrollHeight ?? 0)
+      const gap = parseFloat(getComputedStyle(list).rowGap) || 0
+      setListMinHeight(reservedListHeight(collapsed, details, gap))
+    }
+
+    const observer = new ResizeObserver(measure)
+    observer.observe(list)
+    list.querySelectorAll('.pmore > div').forEach((inner) => observer.observe(inner))
+    // Web fonts change text wrapping after first paint.
+    void document.fonts?.ready.then(measure)
+
+    return () => {
+      cancelled = true
+      observer.disconnect()
+    }
+  }, [])
 
   const selectProduct = (index: number) => {
     setActive(index)
@@ -42,16 +85,17 @@ export function Products() {
 
   const bandStyle: CSSVars = { '--pbg': product.background }
   const showStyle: CSSVars = { '--dur': `${AUTOPLAY_MS / 1000}s` }
+  const listStyle: CSSVars | undefined = listMinHeight === null ? undefined : { '--plist-min': `${listMinHeight}px` }
 
   return (
-    <section className="band prod-band" id="products" style={bandStyle}>
+    <section ref={sectionRef} className="band prod-band" id="products" style={bandStyle}>
       <div className="wrap">
         <SectionHeader lead="Premium products" accent="I've shipped">
           Luxury credit cards, fine dining and wellness: four premium consumer brands, each with its own look and
           feel, all running on the one Next.js core I architected at Times Internet.
         </SectionHeader>
-        <Reveal className={`show${paused || reduced ? ' paused' : ''}`} delay={1} style={showStyle}>
-          <div className="plist">
+        <Reveal className={`show${running ? '' : ' paused'}`} delay={1} style={showStyle}>
+          <div className="plist" ref={listRef} style={listStyle}>
             {PRODUCTS.map((p, i) => (
               // The whole row is clickable for mouse users; keyboard and assistive tech use the real
               // <button> header, and the "Visit" link sits outside it (no nested interactive content).
@@ -60,7 +104,7 @@ export function Products() {
                 className={`pitem${i === active ? ' on' : ''}`}
                 onClick={handleClick(i)}
               >
-                <span key={i === active ? `${p.key}-${playbackVersion}` : p.key} className="prog" />
+                <span key={i === active ? `${p.key}-${playbackVersion}-${inView}` : p.key} className="prog" />
                 <button
                   type="button"
                   className="phead"
