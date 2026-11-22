@@ -41,9 +41,29 @@ export type SkillGroup = {
 export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     title: 'Frontend',
-    skills: ['TypeScript', 'React', 'Next.js', 'TanStack Query', 'Redux', 'Angular', 'Storybook', 'Micro-frontends'],
+    skills: [
+      'TypeScript',
+      'JavaScript',
+      'Next.js',
+      'React',
+      'Redux',
+      'Zustand',
+      'TanStack Query',
+      'HTML',
+      'CSS',
+      'Tailwind CSS',
+      'Angular',
+      'Storybook',
+      'Micro-frontends',
+      'Design systems',
+      'Responsive design',
+      'SSR / ISR',
+    ],
   },
   { title: 'AI engineering', skills: ['Claude Code Skills', 'MCP', 'WebMCP', 'Playwright MCP', 'Figma MCP'] },
-  { title: 'Platform', skills: ['Node.js', 'Docker', 'Kubernetes', 'GCP', 'GitHub Actions', 'Akamai'] },
-  { title: 'Quality', skills: ['Core Web Vitals', 'Lighthouse', 'Elastic APM & RUM', 'Sentry', 'Jest', 'WCAG 2.1 AA'] },
+  { title: 'Platform', skills: ['Node.js', 'REST APIs', 'Docker', 'Kubernetes', 'GCP', 'GitHub Actions', 'Akamai', 'Git'] },
+  {
+    title: 'Quality',
+    skills: ['Core Web Vitals', 'Lighthouse', 'Elastic APM & RUM', 'Sentry', 'Jest', 'Playwright', 'WCAG 2.1 AA'],
+  },
 ]

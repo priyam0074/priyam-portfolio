@@ -27,6 +27,22 @@ describe('resolveRegion', () => {
   })
 })
 
+describe('Southern and Western European markets', () => {
+  test('resolves Portugal, Spain, Luxembourg and Belgium', () => {
+    expect(resolveRegion('pt')).toBe('PT')
+    expect(resolveRegion('ES')).toBe('ES')
+    expect(resolveRegion(' lu ')).toBe('LU')
+    expect(resolveRegion('Be')).toBe('BE')
+  })
+
+  test('names each country in the hero and footer wording', () => {
+    expect(getRegionCopy('PT').heroLine).toBe('open to roles in Portugal')
+    expect(getRegionCopy('ES').heroLine).toBe('open to roles in Spain')
+    expect(getRegionCopy('LU').footerHeading).toBe('Hiring for a senior frontend role in Luxembourg?')
+    expect(getRegionCopy('BE').footerHeading).toBe('Hiring for a senior frontend role in Belgium?')
+  })
+})
+
 describe('regionLabel', () => {
   test('reads naturally in a sentence', () => {
     expect(regionLabel('GB')).toBe('the UK')

@@ -30,7 +30,7 @@ legacy/           the original single-file index.html, kept for reference
 ## Country-specific wording
 
 The hero line and footer heading name the visitor's country ("open to roles in Switzerland") for
-CH, IE, GB (shown as "the UK"), NL, FR, DE, SG, ID, VN, CA and US. Every other country, and
+CH, IE, GB (shown as "the UK"), NL, FR, DE, PT, ES, LU, BE, SG, ID, VN, CA and US. Every other country, and
 crawlers / link-preview bots, get neutral wording ("open to new opportunities").
 
 How it works: `src/proxy.ts` reads Vercel's `x-vercel-ip-country` header and rewrites `/` to a
