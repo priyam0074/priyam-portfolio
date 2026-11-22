@@ -7,8 +7,6 @@ export const PROFILE = {
   linkedinHandle: 'priyam-vashishtha',
   githubUrl: 'https://github.com/priyam0074',
   githubHandle: 'priyam0074',
-  cvUrl: '/Priyam_Vashishtha_CV.pdf',
-  cvFileName: 'Priyam_Vashishtha_CV.pdf',
   avatar: '/img/priyam.jpg',
 } as const
 

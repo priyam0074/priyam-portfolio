@@ -1,13 +1,16 @@
 import Image from 'next/image'
 import { PROFILE } from '@/data/profile'
+import type { PaperSize } from '@/lib/cvFiles'
+import { DownloadCv } from './DownloadCv'
 import { Reveal } from './Reveal'
 
 type ContactProps = {
   heading: string
   lede: string
+  paper: PaperSize
 }
 
-export function Contact({ heading, lede }: ContactProps) {
+export function Contact({ heading, lede, paper }: ContactProps) {
   return (
     <div className="foot-band" id="contact">
       <Reveal as="footer">
@@ -19,9 +22,7 @@ export function Contact({ heading, lede }: ContactProps) {
               <a className="btn sun" href={`mailto:${PROFILE.email}`}>
                 Email me
               </a>
-              <a className="btn ghost" href={PROFILE.cvUrl} download={PROFILE.cvFileName}>
-                Download CV
-              </a>
+              <DownloadCv paper={paper} className="btn ghost" openUp />
             </div>
           </div>
           <ul className="contact">

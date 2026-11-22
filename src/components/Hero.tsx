@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import { PROFILE } from '@/data/profile'
+import type { PaperSize } from '@/lib/cvFiles'
+import { DownloadCv } from './DownloadCv'
 import { HeroArt } from './HeroArt'
 import { Marquee } from './Marquee'
 import { Reveal } from './Reveal'
@@ -14,9 +16,10 @@ const BLOBS = [
 type HeroProps = {
   /** e.g. "open to roles in Switzerland" or "open to new opportunities" */
   openToLine: string
+  paper: PaperSize
 }
 
-export function Hero({ openToLine }: HeroProps) {
+export function Hero({ openToLine, paper }: HeroProps) {
   return (
     <section className="band hero" id="top">
       {BLOBS.map((blob) => (
@@ -44,9 +47,7 @@ export function Hero({ openToLine }: HeroProps) {
             products, zero forked codebases, plus the design system and observability they run on.
           </Reveal>
           <Reveal className="cta" delay={3}>
-            <a className="btn pri" href={PROFILE.cvUrl} download={PROFILE.cvFileName}>
-              Download CV
-            </a>
+            <DownloadCv paper={paper} className="btn pri" />
             <a className="btn" href="#products">
               See products I built
             </a>

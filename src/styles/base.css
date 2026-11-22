@@ -36,3 +36,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cob);outline-offset
 .js .d1{transition-delay:.12s}.js .d2{transition-delay:.24s}.js .d3{transition-delay:.36s}
 @media(max-width:860px){.sec-h{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .rv{opacity:1;transform:none}}
+
+/* "Download CV" dropdown (PDF / DOC) */
+.dl{position:relative;display:inline-flex}
+.dl-caret{flex:none;margin-right:-4px;transition:transform .2s}
+.dl button[aria-expanded="true"] .dl-caret{transform:rotate(180deg)}
+.dl-menu{position:absolute;top:calc(100% + 8px);left:0;z-index:10;min-width:100%;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -16px rgba(15,21,48,.35)}
+.dl-menu[hidden]{display:none}
+.dl-menu.up{top:auto;bottom:calc(100% + 8px)}
+.dl-menu a{display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;color:var(--ink);font:600 15px var(--ff-body);text-decoration:none}
+.dl-menu a:hover,.dl-menu a:focus-visible{background:var(--line)}
+nav .dl-menu{left:auto;right:0}

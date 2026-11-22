@@ -23,7 +23,10 @@ src/
 └── styles/       global CSS split per section (import order matters; see app/layout.tsx)
 public/
 ├── img/          product screenshots + avatar
-└── Priyam_Vashishtha_CV.pdf   ← add your CV here (the "Download CV" buttons link to it)
+├── Priyam_Vashishtha_CV_A4.pdf / .docx       ← CV for A4 countries (default)
+└── Priyam_Vashishtha_CV_Letter.pdf / .docx   ← CV for US and Canada
+    (the "Download CV" menu offers PDF and DOC, always saved as Priyam_Vashishtha_CV.pdf / .docx;
+     US and CA get Letter, everyone else A4 — see src/lib/cvFiles.ts)
 legacy/           the original single-file index.html, kept for reference
 ```
 

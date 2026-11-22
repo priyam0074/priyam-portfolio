@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { useScrolledPast } from '@/hooks/useScrolledPast'
 import { PROFILE } from '@/data/profile'
+import type { PaperSize } from '@/lib/cvFiles'
+import { DownloadCv } from './DownloadCv'
 
 const NAV_LINKS = [
   { href: '#products', label: 'Products' },
@@ -15,7 +17,11 @@ const NAV_LINKS = [
 
 const SCROLLED_AFTER_PX = 24
 
-export function Nav() {
+type NavProps = {
+  paper: PaperSize
+}
+
+export function Nav({ paper }: NavProps) {
   const scrolled = useScrolledPast(SCROLLED_AFTER_PX)
 
   return (
@@ -32,9 +38,7 @@ export function Nav() {
             </a>
           ))}
         </div>
-        <a className="btn pri" href={PROFILE.cvUrl} download={PROFILE.cvFileName}>
-          Download CV
-        </a>
+        <DownloadCv paper={paper} className="btn pri" />
       </div>
     </nav>
   )
